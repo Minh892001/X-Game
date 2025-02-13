@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E61D016B-68A6-49E1-87C6-720A1D297778}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>XSanGo.Client.Net</RootNamespace>
+    <AssemblyName>XSanGo.Client.Net</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Glacier2, Version=3.5.1.0, Culture=neutral, PublicKeyToken=cdd571ade22f2f16, processorArchitecture=MSIL" />
+    <Reference Include="Ice, Version=3.5.1.0, Culture=neutral, PublicKeyToken=cdd571ade22f2f16, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FormGame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormGame.Designer.cs">
+      <DependentUpon>FormGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="generated\slice\Activity.cs" />
+    <Compile Include="generated\slice\ArenaRank.cs" />
+    <Compile Include="generated\slice\BuyJinbi.cs" />
+    <Compile Include="generated\slice\Center.cs" />
+    <Compile Include="generated\slice\CenterF.cs" />
+    <Compile Include="generated\slice\Chat.cs" />
+    <Compile Include="generated\slice\Common.cs" />
+    <Compile Include="generated\slice\Copy.cs" />
+    <Compile Include="generated\slice\Equip.cs" />
+    <Compile Include="generated\slice\ExceptionDef.cs" />
+    <Compile Include="generated\slice\Faction.cs" />
+    <Compile Include="generated\slice\Formation.cs" />
+    <Compile Include="generated\slice\GameSession.cs" />
+    <Compile Include="generated\slice\Item.cs" />
+    <Compile Include="generated\slice\ItemChip.cs" />
+    <Compile Include="generated\slice\LoginSession.cs" />
+    <Compile Include="generated\slice\LoginSessionF.cs" />
+    <Compile Include="generated\slice\Mail.cs" />
+    <Compile Include="generated\slice\Market.cs" />
+    <Compile Include="generated\slice\OnlineAward.cs" />
+    <Compile Include="generated\slice\RankList.cs" />
+    <Compile Include="generated\slice\Role.cs" />
+    <Compile Include="generated\slice\RoleF.cs" />
+    <Compile Include="generated\slice\Shop.cs" />
+    <Compile Include="generated\slice\Sign.cs" />
+    <Compile Include="generated\slice\Sns.cs" />
+    <Compile Include="generated\slice\Task.cs" />
+    <Compile Include="generated\slice\TimeBattle.cs" />
+    <Compile Include="generated\slice\Trader.cs" />
+    <Compile Include="generated\slice\Vip.cs" />
+    <Compile Include="IceManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SessionPingThread.cs" />
+    <EmbeddedResource Include="FormGame.resx">
+      <DependentUpon>FormGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLogin.resx">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="slice\Activity.ice" />
+    <None Include="slice\ArenaRank.ice" />
+    <None Include="slice\BuyJinbi.ice" />
+    <None Include="slice\Center.ice" />
+    <None Include="slice\CenterF.ice" />
+    <None Include="slice\Chat.ice" />
+    <None Include="slice\Common.ice" />
+    <None Include="slice\Copy.ice" />
+    <None Include="slice\Equip.ice" />
+    <None Include="slice\ExceptionDef.ice" />
+    <None Include="slice\Faction.ice" />
+    <None Include="slice\Formation.ice" />
+    <None Include="slice\GameSession.ice" />
+    <None Include="slice\Item.ice" />
+    <None Include="slice\ItemChip.ice" />
+    <None Include="slice\LoginSession.ice" />
+    <None Include="slice\LoginSessionF.ice" />
+    <None Include="slice\Mail.ice" />
+    <None Include="slice\Market.ice" />
+    <None Include="slice\OnlineAward.ice" />
+    <None Include="slice\RankList.ice" />
+    <None Include="slice\Role.ice" />
+    <None Include="slice\RoleF.ice" />
+    <None Include="slice\Shop.ice" />
+    <None Include="slice\Sign.ice" />
+    <None Include="slice\Sns.ice" />
+    <None Include="slice\Task.ice" />
+    <None Include="slice\TimeBattle.ice" />
+    <None Include="slice\Trader.ice" />
+    <None Include="slice\Vip.ice" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ice.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties ZerocIce_ProjectVersion="1" ZerocIce_IncludePath="E:\workspace\XSanGo.Protocol\slice" ZerocIce_OutputDir="generated" ZerocIce_Enabled="True" />
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

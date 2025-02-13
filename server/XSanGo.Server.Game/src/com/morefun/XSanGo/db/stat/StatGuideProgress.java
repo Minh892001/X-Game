@@ -1,0 +1,76 @@
+package com.morefun.XSanGo.db.stat;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "stat_guide_progress")
+public class StatGuideProgress implements Serializable {
+	private long id;
+	private Date statDate;
+	private int serverId;
+	private int guideId;
+	private int roleCount;
+
+	public StatGuideProgress(Date statDate, int serverId, int guideId,
+			int roleCount) {
+		this.statDate = statDate;
+		this.serverId = serverId;
+		this.guideId = guideId;
+		this.roleCount = roleCount;
+	}
+
+	@Id
+	@GeneratedValue
+	@Column(name = "id", nullable = false)
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	@Column(name = "stat_date", nullable = false, columnDefinition = "date not null")
+	public Date getStatDate() {
+		return statDate;
+	}
+
+	public void setStatDate(Date statDate) {
+		this.statDate = statDate;
+	}
+
+	@Column(name = "server_id", nullable = false)
+	public int getServerId() {
+		return serverId;
+	}
+
+	public void setServerId(int serverId) {
+		this.serverId = serverId;
+	}
+
+	@Column(name = "guide_id", nullable = false)
+	public int getGuideId() {
+		return guideId;
+	}
+
+	public void setGuideId(int guideId) {
+		this.guideId = guideId;
+	}
+
+	@Column(name = "role_count", nullable = false)
+	public int getRoleCount() {
+		return roleCount;
+	}
+
+	public void setRoleCount(int roleCount) {
+		this.roleCount = roleCount;
+	}
+
+}

@@ -1,0 +1,8 @@
+# 配置文件相关变更记录在这里，新增更新请附加到文件末尾
+
+#2015-08-20 新增聊天禁言配置
+<bean id="ChatVoteForbiddenDAO" class="com.morefun.XSanGo.db.game.ChatVoteForbiddenDAO">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+</bean>

@@ -1,0 +1,6 @@
+#20160128 比武大会老积分不发奖处理，applicationContextMain.xml文件增加
+<bean id="ScoreLogDAO" class="com.morefun.XSanGo.db.ScoreLogDAO">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+</bean>

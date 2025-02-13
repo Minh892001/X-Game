@@ -1,0 +1,16 @@
+# 配置文件相关变更记录在这里，新增更新请附加到文件末尾
+
+删除app.properties中的Yuanbao10WineFixReward配置
+
+applicationContextMain.xml文件中的Yuanbao10WineFixReward节点替换为如下内容，然后根据运营需求配置enable开关及具体物品ID
+<bean id="Yuanbao10WineFixReward" class="com.morefun.XSanGo.temp.FixRewardForBuy10WineT">
+	<property name="enable" value="false"></property>
+	<property name="itemTemplateId" value="ch_sjzizhuang"></property>
+</bean>
+
+#20150709增加公会战个人排行榜DAO
+<bean id="FactionMemberRankDAO" class="com.morefun.XSanGo.db.game.FactionMemberRankDAO">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+</bean>

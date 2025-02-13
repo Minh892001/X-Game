@@ -1,0 +1,32 @@
+<?xml   version="1.0"   encoding="UTF-8"?>
+<!--  工程名称 -->
+<project name="XSanGo.Protocol">
+	<!--  . 表示当前工程目录，也目录使用绝对路径 -->
+	<property name="jar.home" value="D:\jar" />	
+	<property name="classes.home" value="bin" />
+	<property name="app.jar" value="xsango-protocol.jar" />
+
+	<path id="classpath">
+		<pathelement location="${jar.home}" />		
+	</path>
+	<tstamp>
+		<format property="TODAY" pattern="yyyyMMddHHmmss"/>
+	</tstamp>
+	
+
+	<target name="build">
+		<!-- 先删除原有jar -->
+		<delete>
+			<fileset dir="${jar.home}">
+				<include name="${app.jar}" />
+			</fileset>
+		</delete>
+		<!--  生成jar -->
+		<jar jarfile="${jar.home}/${app.jar}" basedir="${classes.home}">
+			<!--不包含所有文件夹下某类文件	<exclude name="**/*.properties" /> -->
+			<include name="**/*.class"/>
+		</jar>
+		<copy file="${jar.home}/${app.jar}" tofile="${jar.home}/backup/${app.jar}${TODAY}">
+		</copy>
+	</target>
+</project>

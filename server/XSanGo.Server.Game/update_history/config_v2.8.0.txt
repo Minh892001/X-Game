@@ -1,0 +1,29 @@
+# 配置文件相关变更记录在这里，新增更新请附加到文件末尾
+
+#ehcache.xml文件mail节点增加属性overflowToDisk="true"
+
+
+#20151219成就全服首次公告
+<bean id="FirstServerNotifyDao" class="com.morefun.XSanGo.db.game.FirstServerNotifyDao">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+</bean>
+
+#20160105 applicationContextMain.xml spring扫描注解注入
+<!-- 自动扫描带注解的DAO -->
+<context:component-scan base-package="com.morefun.XSanGo.db.game" />
+
+#20160114 applicationContextMain.xml文件更改
+logService节点里的  com.morefun.XSanGo.db.*.*  替换成  com.morefun.XSanGo.db.game.*.*
+
+#20160108比武大会
+#ehcache.xml
+<!-- 比武大会, 押注 -->
+<cache name="tournamentBet" maxElementsInMemory="1000000"
+	eternal="true" memoryStoreEvictionPolicy="LRU">
+	<searchable>
+		<searchAttribute name="roleId" expression="value.getRoleId()" />
+		<searchAttribute name="fightId" expression="value.getFightId()" />
+	</searchable>
+</cache>

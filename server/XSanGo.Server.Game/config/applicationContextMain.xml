@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+	xsi:schemaLocation=" http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans">
+
+	<!-- 自动扫描带注解的DAO -->
+	<context:component-scan base-package="com.morefun.XSanGo.db.game" />
+
+	<bean id="AppConfigFile" class="java.lang.String">
+		<constructor-arg value="app.properties"></constructor-arg>
+	</bean>
+
+	<bean
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<ref bean="AppConfigFile" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="gameDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${game.jdbc.url}" />
+		<property name="user" value="${game.jdbc.user}" />
+		<property name="password" value="${game.jdbc.password}" />
+
+		<property name="initialPoolSize" value="1" />
+		<!--连接空闲时间(秒) -->
+		<property name="maxIdleTime" value="300" />
+		<property name="maxPoolSize" value="50" />
+		<property name="minPoolSize" value="10" />
+		<!--获取新连接的等待时间(毫秒)0一直等待 -->
+		<property name="checkoutTimeout" value="30000" />
+		<!--检测空闲连接的时间间隔(秒) -->
+		<property name="idleConnectionTestPeriod" value="150" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="gameDataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
+			</props>
+		</property>
+		<!--自动扫描包下所有@Entity类 -->
+		<property name="packagesToScan" value="com.morefun.XSanGo.db.game"></property>
+	</bean>
+
+	<!-- enable autowire -->
+	<context:annotation-config />
+
+	<bean id="RoleDAO" class="com.morefun.XSanGo.db.game.RoleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="SimpleDAO" class="com.morefun.XSanGo.db.game.SimpleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ServerConfigDao" class="com.morefun.XSanGo.db.game.ServerConfigDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ChatMessageDAO" class="com.morefun.XSanGo.db.game.ChatMessageDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ArenaRankDao" class="com.morefun.XSanGo.db.game.ArenaRankDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FactionDAO" class="com.morefun.XSanGo.db.game.FactionDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FactionReqDAO" class="com.morefun.XSanGo.db.game.FactionReqDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="WorshipRankDAO" class="com.morefun.XSanGo.db.game.WorshipRankDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="RankListDAO" class="com.morefun.XSanGo.db.game.RankListDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="MailDAO" class="com.morefun.XSanGo.db.game.MailDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="RoleLadderDao" class="com.morefun.XSanGo.db.game.RoleLadderDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="RedPacketDao" class="com.morefun.XSanGo.db.game.RedPacketDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AuctionHouseDao" class="com.morefun.XSanGo.db.game.AuctionHouseDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FightMovieDao" class="com.morefun.XSanGo.db.game.FightMovieDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FactionMemberRankDAO" class="com.morefun.XSanGo.db.game.FactionMemberRankDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ChatVoteForbiddenDAO" class="com.morefun.XSanGo.db.game.ChatVoteForbiddenDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="HaoqingbaoDao" class="com.morefun.XSanGo.db.game.HaoqingbaoDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ShootScoreRankDao" class="com.morefun.XSanGo.db.game.ShootScoreRankDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="FirstServerNotifyDao" class="com.morefun.XSanGo.db.game.FirstServerNotifyDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+
+	<!--合服配置结束 -->
+	<bean id="DbLogAspect" class="com.morefun.XSanGo.LogAspect" />
+	<aop:config proxy-target-class="true">
+		<aop:aspect id="db" ref="DbLogAspect">
+			<!-- 配置com.morefun.XSanGo.db包下所有类或接口的所有方法 -->
+			<aop:pointcut id="logService"
+				expression="execution(* com.morefun.XSanGo.db.game.*.*(..))" />
+			<aop:around pointcut-ref="logService" method="doAround" />
+		</aop:aspect>
+	</aop:config>
+
+
+	<!-- stat -->
+	<import resource="applicationContextStat.xml" />
+
+	<!-- log -->
+	<import resource="applicationContextLog.xml" />
+
+	<!-- 自定义配置 -->
+	<bean id="DeployPlatform" class="java.lang.String">
+		<constructor-arg value="${DeployPlatform}"></constructor-arg>
+	</bean>
+	<bean id="DebugMode" class="java.lang.Boolean">
+		<constructor-arg value="${DebugMode}"></constructor-arg>
+	</bean>
+	<bean id="CreateNewRole" class="java.lang.Boolean">
+		<constructor-arg value="${CreateNewRole}"></constructor-arg>
+	</bean>
+	<bean id="RoleL2cache" class="java.lang.Boolean">
+		<constructor-arg value="${Role.L2cache}"></constructor-arg>
+	</bean>
+	<bean id="CheckScriptOnStart" class="java.lang.Boolean">
+		<constructor-arg value="${CheckScriptOnStart}"></constructor-arg>
+	</bean>
+	<bean id="FourthTestEnable" class="java.lang.Boolean">
+		<constructor-arg value="${FourthTestEnable}"></constructor-arg>
+	</bean>
+	<bean id="Yuanbao10WineFixReward" class="com.morefun.XSanGo.temp.FixRewardForBuy10WineT">
+		<property name="enable" value="false"></property>
+		<property name="itemTemplateId" value="ch_sjzizhuang"></property>
+	</bean>
+	<!-- 可选配置，是否启用熔断，默认为true-->
+	<bean id="FuseFlag" class="java.lang.Boolean">
+		<constructor-arg value="false"></constructor-arg>
+	</bean>
+	
+
+	<bean id="BI_gameId" class="java.lang.String">
+		<constructor-arg value="${BI_gameId}"></constructor-arg>
+	</bean>
+	<bean id="BI_isStart" class="java.lang.Boolean">
+		<constructor-arg value="${BI_isStart}"></constructor-arg>
+	</bean>
+	<bean id="BI_onlineIntervalTime" class="java.lang.Integer">
+		<constructor-arg value="${BI_onlineIntervalTime}"></constructor-arg>
+	</bean>
+	<bean id="BI_isTest" class="java.lang.Boolean">
+		<constructor-arg value="${BI_isTest}"></constructor-arg>
+	</bean>
+	<bean id="FightMovie_Validate_Url" class="java.lang.String">
+		<constructor-arg value="${FightMovie_Validate_Url}"></constructor-arg>
+	</bean>
+	<bean id="FightMovie_Validate_Open" class="java.lang.Boolean">
+		<constructor-arg value="${FightMovie_Validate_Open}"></constructor-arg>
+	</bean>
+	<bean id="FightMovieUrl" class="java.lang.String">
+		<constructor-arg value="${FightMovieUrl}"></constructor-arg>
+	</bean>
+</beans>

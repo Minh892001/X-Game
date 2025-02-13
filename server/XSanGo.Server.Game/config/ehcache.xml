@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+	<!--timeToIdleSeconds 当缓存闲置n秒后销毁 -->
+	<!--timeToLiveSeconds 当缓存存活n秒后销毁 -->
+	<!-- 缓存配置 name:缓存名称。 maxElementsInMemory：缓存最大个数。 eternal:对象是否永久有效，一但设置了，timeout将不起作用。 
+		timeToIdleSeconds：设置对象在失效前的允许闲置时间（单位：秒）。仅当eternal=false对象不是永久有效时使用，可选属性，默认值是0，也就是可闲置时间无穷大。 
+		timeToLiveSeconds：设置对象在失效前允许存活时间（单位：秒）。最大时间介于创建时间和失效时间之间。 仅当eternal=false对象不是永久有效时使用，默认是0.，也就是对象存活时间无穷大。 
+		overflowToDisk：当内存中对象数量达到maxElementsInMemory时，Ehcache将会对象写到磁盘中。 diskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区。 
+		maxElementsOnDisk：硬盘最大缓存个数。 diskPersistent：是否缓存虚拟机重启期数据 Whether the disk 
+		store persists between restarts of the Virtual Machine. The default value 
+		is false. diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒。 memoryStoreEvictionPolicy：当达到maxElementsInMemory限制时，Ehcache将会根据指定的策略去清理内存。默认策略是LRU（最近最少使用）。 
+		你可以设置为FIFO（先进先出）或是LFU（较少使用）。 clearOnFlush：内存数量最大时是否清除。 -->
+
+	<diskStore path="E:/tmpdir" />
+
+	<defaultCache maxElementsInMemory="1000" eternal="true" />
+
+	<!-- 角色数据库缓存，用于减少查询IO -->
+	<cache name="L2_Cache" maxElementsInMemory="750" eternal="true" />
+
+	<!-- 角色和公会数据保存失败时的数据缓存，用于恢复数据或查找bug -->
+	<cache name="error_data" maxElementsInMemory="500" eternal="true"
+		overflowToDisk="true" diskPersistent="true" diskSpoolBufferSizeMB="1000">
+		<searchable>
+			<searchAttribute name="roleName" expression="value.getName()" />
+			<searchAttribute name="account" expression="value.getAccount()" />
+			<searchAttribute name="serverId" expression="value.getServerId()" />
+		</searchable>
+	</cache>
+
+	<cache name="faction_error_data" maxElementsInMemory="500"
+		eternal="true" overflowToDisk="true" diskPersistent="true"
+		diskSpoolBufferSizeMB="1000" />
+
+	<!-- 连接验证码，由中心服务器发送，用于客户端建立连接时验证合法性 -->
+	<cache name="verify" maxElementsInMemory="5000"
+		timeToLiveSeconds="30" memoryStoreEvictionPolicy="FIFO" />
+
+	<!-- 重连验证码，用于客户端断线重连，避免重新走一次常规登录流程 -->
+	<cache name="reconnect_key" maxElementsInMemory="100000"
+		timeToLiveSeconds="21600" memoryStoreEvictionPolicy="FIFO" />
+
+	<!-- 角色运行时对象缓存 -->
+	<cache name="role" maxElementsInMemory="1500" eternal="true"
+		memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="roleName" expression="value.getName()" />
+			<searchAttribute name="online" expression="value.isOnline()" />
+			<searchAttribute name="account" expression="value.getAccount()" />
+			<searchAttribute name="level" expression="value.getLevel()" />
+			<searchAttribute name="factionId"
+				expression="value.getFactionControler().getFactionId()" />
+			<searchAttribute name="remoteAddress" expression="value.getRemoteAddress()" />
+			<searchAttribute name="serverId" expression="value.getServerId()" />
+		</searchable>
+	</cache>
+
+	<!-- 公会对象，全局常驻内存 -->
+	<cache name="faction" maxElementsInMemory="10000" eternal="true"
+		memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="name" expression="value.getName()" />
+			<searchAttribute name="id" expression="value.getId()" />
+			<searchAttribute name="size" expression="value.getSize()" />
+			<searchAttribute name="level" expression="value.getLevel()" />
+		</searchable>
+	</cache>
+
+	<!-- 加入公会申请的缓存，全局常驻内存 -->
+	<cache name="factionReq" maxElementsInMemory="50000" eternal="true"
+		memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="factionId" expression="value.getFactionId()" />
+			<searchAttribute name="roleId" expression="value.getRoleId()" />
+			<searchAttribute name="reqDate" expression="value.getReqDate().getTime()" />
+		</searchable>
+	</cache>
+
+	<cache name="mail" maxElementsInMemory="500000" eternal="true" overflowToDisk="true"
+		memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="acceptorId" expression="value.getAcceptorId()" />
+			<searchAttribute name="createTime"
+				expression="value.getCreateTime().getTime()" />
+		</searchable>
+	</cache>
+
+	<!-- 经济统计数据，停服时写入，开服时重新加载 -->
+	<cache name="ecnomy_stat" maxElementsInMemory="10" eternal="true"
+		overflowToDisk="true" diskPersistent="true" diskSpoolBufferSizeMB="10" />
+
+	<!--最高战力对应阵型数据 -->
+	<cache name="formationCollecter" maxElementsInMemory="100000"
+		eternal="true" memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="power" expression="value.getPower()" />
+			<searchAttribute name="level" expression="value.getRoleLevel()" />
+		</searchable>
+	</cache>
+
+	<!-- 拍卖行 -->
+	<cache name="auctionHouse" maxElementsInMemory="100000" eternal="true"
+		memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="endTime" expression="value.getEndTime()" />
+			<searchAttribute name="sellerId" expression="value.getSellerId()" />
+			<searchAttribute name="auctionId" expression="value.getId()" />
+			<searchAttribute name="type" expression="value.getSubType()" />
+			<searchAttribute name="quality" expression="value.getQuality()" />
+			<searchAttribute name="keyword" expression="value.getName()" />
+			<searchAttribute name="bidder" expression="value.getBidderId()" />
+		</searchable>
+	</cache>
+	<cache name="auctionHouseRecords" maxElementsInMemory="100000"
+		eternal="true" memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="roleId" expression="value.getRoleId()" />
+			<searchAttribute name="auctionId" expression="value.getAuctionId()" />
+			<searchAttribute name="type" expression="value.getSubType()" />
+			<searchAttribute name="quality" expression="value.getQuality()" />
+			<searchAttribute name="keyword" expression="value.getName()" />
+			<searchAttribute name="endTime" expression="value.getEndTime()" />
+		</searchable>
+	</cache>
+
+	<!-- 豪情宝 -->
+	<cache name="haoqingbaoItem" maxElementsInMemory="1000000"
+		eternal="true" memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="itemId" expression="value.getId()" />
+			<searchAttribute name="startTime" expression="value.getStartTime()" />
+			<searchAttribute name="finished" expression="value.getFinished()" />
+		</searchable>
+	</cache>
+	<cache name="haoqingbaoRedPacket" maxElementsInMemory="1000000"
+		eternal="true" memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="itemId" expression="value.getItemId()" />
+			<searchAttribute name="recverId" expression="value.getReceiverId()" />
+		</searchable>
+	</cache>
+	
+	<!-- 比武大会, 押注 -->
+	<cache name="tournamentBet" maxElementsInMemory="1000000"
+		eternal="true" memoryStoreEvictionPolicy="LRU">
+		<searchable>
+			<searchAttribute name="roleId" expression="value.getRoleId()" />
+			<searchAttribute name="fightId" expression="value.getFightId()" />
+		</searchable>
+	</cache>
+</ehcache>

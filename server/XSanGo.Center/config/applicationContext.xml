@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="centerDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://192.168.1.208/xsg_center?useUnicode=true&amp;characterEncoding=UTF8" />
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+
+		<property name="initialPoolSize" value="1" />
+		<!--连接空闲时间(秒) -->
+		<property name="maxIdleTime" value="300" />
+		<property name="maxPoolSize" value="20" />
+		<property name="minPoolSize" value="1" />
+		<!--获取新连接的等待时间(毫秒)0一直等待 -->
+		<property name="checkoutTimeout" value="5000" />
+		<!--检测空闲连接的时间间隔(秒) -->
+		<property name="idleConnectionTestPeriod" value="150" />
+	</bean>
+	<bean id="statDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://192.168.1.208/xsg_stat?useUnicode=true&amp;characterEncoding=UTF8" />
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+
+		<property name="initialPoolSize" value="1" />
+		<!--连接空闲时间(秒) -->
+		<property name="maxIdleTime" value="300" />
+		<property name="maxPoolSize" value="20" />
+		<property name="minPoolSize" value="1" />
+		<!--获取新连接的等待时间(毫秒)0一直等待 -->
+		<property name="checkoutTimeout" value="5000" />
+		<!--检测空闲连接的时间间隔(秒) -->
+		<property name="idleConnectionTestPeriod" value="150" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="centerDataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<!--自动扫描包下所有@Entity类 -->
+		<property name="packagesToScan" value="com.morefun.XSanGo.db"></property>
+	</bean>
+
+	<bean id="ChargeDAO" class="com.morefun.XSanGo.db.ChargeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ChannelDAO" class="com.morefun.XSanGo.db.ChannelDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="AccountDAO" class="com.morefun.XSanGo.db.AccountDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="GameServerDAO" class="com.morefun.XSanGo.db.GameServerDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="YuanbaoTransferLogDAO" class="com.morefun.XSanGo.db.YuanbaoConsumeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="YuanBaoDetailDAO" class="com.morefun.XSanGo.db.YuanBaoChargeDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="CDKDao" class="com.morefun.XSanGo.db.CDKDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="ActiveCodeDao" class="com.morefun.XSanGo.db.ActiveCodeDao">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<bean id="statSessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="statDataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<!--自动扫描包下所有@Entity类 -->
+		<property name="packagesToScan" value="com.morefun.XSanGo.db.stat"></property>
+	</bean>
+	<bean id="StatSimpleDAO" class="com.morefun.XSanGo.db.stat.StatSimpleDAO">
+		<property name="sessionFactory">
+			<ref bean="statSessionFactory" />
+		</property>
+	</bean>
+
+
+	<!-- 自定义配置 -->
+	<bean id="MfLoginUrl" class="java.lang.String">
+		<constructor-arg value="http://192.168.1.44:18080/passport/common"></constructor-arg>
+	</bean>
+	<bean id="MiYuLoginUrl" class="java.lang.String">
+		<constructor-arg value="http://sdkdrive.miyugame.com/CheckLogin"></constructor-arg>
+	</bean>
+	<bean id="HttpPort" class="java.lang.Integer">
+		<constructor-arg value="8888"></constructor-arg>
+	</bean>
+	<bean id="NeedActive" class="java.lang.Boolean">
+		<constructor-arg value="false"></constructor-arg>
+	</bean>
+	<bean id="Announce" class="com.morefun.XSanGo.client.Announcement">
+		<constructor-arg name="show" value="true"></constructor-arg>
+		<constructor-arg name="content" value="欢迎光临~"></constructor-arg>
+	</bean>
+	<bean id="CheckCdkChannel" class="java.lang.Boolean">
+		<constructor-arg value="false"></constructor-arg>
+	</bean>
+	<bean id="CanExecuteGroovy" class="java.lang.Boolean">
+		<constructor-arg value="false"></constructor-arg>
+	</bean>
+	<bean id="IOS_AppStore_Order_Url" class="java.lang.String">
+		<constructor-arg value="http://127.0.0.1/paycenter/to/appstore.jsp"></constructor-arg>
+	</bean>
+	<bean id="AlarmSMSConfig" class="com.morefun.XSanGo.logicserver.AlarmSMSConfig">
+		<constructor-arg value="true"></constructor-arg>
+		<constructor-arg value="18516059801"></constructor-arg>
+		<constructor-arg value="http://101.251.206.230:34043/putsms/sms"></constructor-arg>
+		<constructor-arg value="4"></constructor-arg>
+	</bean>
+	<!-- 美峰218.202.239.238 -->
+	<!-- 当乐118.122.122.213 -->
+	<!-- PP14.152.64.74 -->
+	<!-- 九游122.13.84.74,14.152.64.74 -->
+	<!-- 奇虎160.120.108.6,218.30.116.4 -->
+	<!-- 陌陌IP： 124.251.45.5北京市 世纪互联 -->
+	<!-- 雪鲤鱼IP地址：58.246.68.98上海市 联通 -->
+	<!-- IP：61.51.80.122 奇酷工厂的 -->
+	<!-- 灵石网络的 IP 112.64.166.142 -->
+	<!-- 触游的IP 113.90.81.94 -->
+	<!-- 恺英IP地址：101.95.156.206,180.173.216.141 -->
+	<!-- 蓝港互动IP：113.208.129.60 -->
+	<!-- 台湾松岗手游 60.251.137.217 -->
+	<!-- 云顶科技IP：218.104.231.54 -->
+	<!-- 上海游陆IP：IP:192.168.11.105 -->
+	<!-- IP:111.207.14.101 龙图 -->
+	<!-- 灵游科技 218.17.161.2 -->
+	<!-- 118.69.59.108ingame -->
+	<!-- 172.16.17.44 -->
+	<!-- 乐恒互动223.72.133.2 -->
+	<!-- 掌趣IP: 60.247.21.66 -->
+	<!-- <bean id="WhiteList" class="com.morefun.XSanGo.http.WhiteList"> <constructor-arg 
+		name="enable" value="true"></constructor-arg> <constructor-arg name="whiteIpStr" 
+		value="218.202.239.238,118.122.122.213,14.152.64.74,122.13.84.74,14.152.64.74,160.120.108.6,218.30.116.4,124.251.45.5,58.246.68.98,61.51.80.122,112.64.166.142,113.90.81.94,101.95.156.206,113.208.129.60,60.251.137.217,218.104.231.54,111.207.14.101,218.17.161.2,118.69.59.108,172.16.17.44,60.247.21.66"></constructor-arg> 
+		<constructor-arg name="whiteAccountStr" value="xsg006.mf"></constructor-arg> 
+		<constructor-arg name="tip" value="3月19日10：00精英封测正式开启"></constructor-arg> 
+		</bean> <bean id="CpWhiteList" class="com.morefun.XSanGo.http.WhiteList"> 
+		<constructor-arg name="enable" value="true"></constructor-arg> <constructor-arg 
+		name="whiteIpStr" value="218.202.239.238"></constructor-arg> <constructor-arg 
+		name="whiteAccountStr" value="xsg006.mf"></constructor-arg> <constructor-arg 
+		name="tip" value=""></constructor-arg> </bean> -->
+	<!-- 审核服配置 -->
+	<bean id="SpCheckServer" class="com.morefun.XSanGo.http.CheckServerConfig">
+		<constructor-arg name="checkingVersion" value="1.2.0"></constructor-arg>
+		<constructor-arg name="serverId" value="11"></constructor-arg>
+	</bean>
+
+	<bean id="BI_gameId" class="java.lang.String">
+		<constructor-arg value="0045"></constructor-arg>
+	</bean>
+	<bean id="BI_isStart" class="java.lang.Boolean">
+		<constructor-arg value="false"></constructor-arg>
+	</bean>
+	<bean id="BI_isTest" class="java.lang.Boolean">
+		<constructor-arg value="true"></constructor-arg>
+	</bean>
+
+</beans>

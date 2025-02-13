@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="logDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${log.jdbc.url}" />
+		<property name="user" value="${log.jdbc.user}" />
+		<property name="password" value="${log.jdbc.password}" />
+
+		<property name="initialPoolSize" value="1" />
+		<!--连接空闲时间(秒) -->
+		<property name="maxIdleTime" value="300" />
+		<property name="maxPoolSize" value="20" />
+		<property name="minPoolSize" value="1" />
+		<!--获取新连接的等待时间(毫秒)0一直等待 -->
+		<property name="checkoutTimeout" value="5000" />
+		<!--检测空闲连接的时间间隔(秒) -->
+		<property name="idleConnectionTestPeriod" value="150" />
+	</bean>
+
+	<bean id="logSessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="logDataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">false</prop>
+			</props>
+		</property>
+		<!--自动扫描包下所有@Entity类 -->
+		<property name="packagesToScan" value="com.morefun.XSanGo.db.log"></property>
+	</bean>
+	<bean id="LogSimpleDAO" class="com.morefun.XSanGo.db.log.SimpleDAO">
+		<property name="sessionFactory">
+			<ref bean="logSessionFactory" />
+		</property>
+	</bean>
+</beans>

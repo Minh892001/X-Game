@@ -1,0 +1,42 @@
+﻿# 配置文件相关变更记录在这里，新增更新请附加到文件末尾
+#20151020豪情宝
+applicationContextMain.xml增加
+<bean id="HaoqingbaoDao" class="com.morefun.XSanGo.db.game.HaoqingbaoDao">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+</bean>
+
+ehcache.xml 增加
+<!-- 豪情宝 -->
+<cache name="haoqingbaoItem" maxElementsInMemory="1000000"
+	eternal="true" memoryStoreEvictionPolicy="LRU">
+	<searchable>
+		<searchAttribute name="itemId" expression="value.getId()" />
+		<searchAttribute name="startTime" expression="value.getStartTime()" />
+		<searchAttribute name="finished" expression="value.getFinished()" />
+	</searchable>
+</cache>
+<cache name="haoqingbaoRedPacket" maxElementsInMemory="1000000"
+	eternal="true" memoryStoreEvictionPolicy="LRU">
+	<searchable>
+		<searchAttribute name="itemId" expression="value.getItemId()" />
+		<searchAttribute name="recverId" expression="value.getReceiverId()" />
+	</searchable>
+</cache>
+
+#20151024百步穿杨
+<bean id="ShootScoreRankDao" class="com.morefun.XSanGo.db.game.ShootScoreRankDao">
+	<property name="sessionFactory">
+		<ref bean="sessionFactory" />
+	</property>
+</bean>
+
+#20151026 新增服务器ID的缓存查询项
+ehcache.xml文件的error_data和role两个节点的中<searchable>都增加以下内容
+<searchAttribute name="serverId" expression="value.getServerId()" />
+
+#ehcache.xml文件mail节点属性maxElementsInMemory=500000
+
+#增加配置文件applicationContextForCombine.xml
+CombineServerId节点value设置为将要合并的服务器ID

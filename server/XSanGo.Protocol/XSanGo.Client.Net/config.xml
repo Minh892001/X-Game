@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <account username="log001" password="01234" />
+    <account username="log002" password="01234" />
+    <account username="log003" password="01234" />
+    <account username="log004" password="01234" />
+    <account username="log005" password="01234" />
+    <account username="log006" password="01234" />
+    <account username="log007" password="01234" />
+    <account username="log008" password="01234" />
+    <account username="log009" password="01234" />
+    <account username="log010" password="01234" />
+    <account username="log011" password="01234" />
+    <account username="log012" password="01234" />
+    <account username="log013" password="01234" />
+    <account username="log014" password="01234" />
+</configuration>

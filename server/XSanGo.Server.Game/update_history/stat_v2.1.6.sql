@@ -1,0 +1,2 @@
+#20150911 增加帐号操作记录表
+CREATE TABLE `account_operate_log`(     `id` BIGINT NOT NULL AUTO_INCREMENT ,     `account` VARCHAR(64) NOT NULL ,     `create_time` DATETIME NOT NULL ,     `remark` VARCHAR(512) ,     PRIMARY KEY (`id`)  );

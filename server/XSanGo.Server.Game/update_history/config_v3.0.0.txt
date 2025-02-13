@@ -1,0 +1,9 @@
+# 配置文件相关变更记录在这里，新增更新请附加到文件末尾
+
+#20160223 app.properties增加战报生成接口地址，线上更新时需改成对应ip
+FightMovieUrl=http://192.168.4.213:18080/generate_report
+
+#20160223 applicationContextMain.xml增加战报生成接口地址
+<bean id="FightMovieUrl" class="java.lang.String">
+	<constructor-arg value="${FightMovieUrl}"></constructor-arg>
+</bean>

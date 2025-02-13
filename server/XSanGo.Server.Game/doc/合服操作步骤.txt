@@ -1,0 +1,37 @@
+准备工作：
+	游戏服角色表增加服务器ID字段，群雄争霸，拍卖行增加结束接口，邮件缓存容量扩容到40W，中心服数据库游戏服表增加服务器ID字段，这些要合服前一个维护周期上线
+
+
+以下操作步骤如无特别说明，皆为运维的大神操作
+1、关闭所有网关
+2、等待1min
+3、被合并服务器网关迁移，更新grid
+4、结算群雄争霸，退回拍卖物品（GM工具操作）
+5、更新中心服里被合并服务器的target_id为合服后服务器ID，gateway同主服的gateway（GM工具操作）
+6、关闭游戏服
+7、两边数据库备份
+8、运行合服工具：
+	合并邮件中心邮件
+	合并角色数据（机器人除外，更新有重复的角色名）
+	清理主服机器人
+	合并公会数据（更新有重复的公会名）
+9、主服数据库清空玩家副本膜拜数据，好友邀请码，竞技场排行，膜拜排行数据，全服邮件
+	TRUNCATE TABLE worship_rank;
+	TRUNCATE TABLE invite_code;
+	TRUNCATE TABLE role_worship;
+	TRUNCATE TABLE arena_rank;
+	UPDATE role_arena_rank SET sneer_id = 0,sneer_str = '',attack_fight_sum = 1,guard_fight_sum = 1,attack_win_sum = 1,guard_win_num = 1,guard_win_sum = 0,
+		challenge_buy = 0, clear_cd_num = 0, challenge = 5,challenge_buy = 0,challenge_buy_date = (SUBDATE(NOW(), INTERVAL 300 SECOND)), 
+		clear_cd_Date = (SUBDATE(NOW(), INTERVAL 300 SECOND)),fight_date = (SUBDATE(NOW(), INTERVAL 300 MONTH)),exchange_item_str = '',exchange_refresh_date = NOW(),
+		exchange_refresh_num = 0,clear_cd_Date = (SUBDATE(NOW(), INTERVAL 300 MONTH)),clear_cd_num = 0,show_report_date = NOW();
+	TRUNCATE TABLE role_arena_rank_fight;
+	TRUNCATE TABLE server_copy;
+	TRUNCATE TABLE role_ladder_report;
+	TRUNCATE TABLE role_ladder;
+	DELETE FROM mail WHERE acceptor_id = 'allMail';
+	UPDATE role SET invite_code = NULL;
+	#清理不存在的好友邀请，如原先来自虚拟女友的邀请，虚拟女友在合服时会被清理
+	DELETE FROM friend_applying_history WHERE player NOT IN (SELECT id FROM role);
+	
+10、再次开服，此时会生成机器人，流程参照开新服
+

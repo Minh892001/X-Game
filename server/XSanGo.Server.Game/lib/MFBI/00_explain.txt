@@ -1,0 +1,9 @@
+MFBI文件夹下，是美峰的BI使用
+核心jar包： MFBISdk.jar 正式环境 使用
+         MFBISdk_test.jar 测试环境 使用
+
+以下的这些包，在lib/spring中，存在低版本，这个文件夹下，就不在引用
+ commons-collections-3.2.1.jar
+ log4j-1.2.17.jar
+ slf4j-api-1.6.1.jar
+ slf4j-log4j12-1.6.1.jar

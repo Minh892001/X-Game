@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="com.mysql.jdbc.Driver" />
+		<property name="jdbcUrl"
+			value="jdbc:mysql://localhost/xsg_cross?useUnicode=true&amp;characterEncoding=UTF8" />
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+
+		<property name="initialPoolSize" value="1" />
+		<!--连接空闲时间(秒) -->
+		<property name="maxIdleTime" value="300" />
+		<property name="maxPoolSize" value="20" />
+		<property name="minPoolSize" value="1" />
+		<!--获取新连接的等待时间(毫秒)0一直等待 -->
+		<property name="checkoutTimeout" value="5000" />
+		<!--检测空闲连接的时间间隔(秒) -->
+		<property name="idleConnectionTestPeriod" value="150" />
+	</bean>
+
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"></property>
+		<!--下划线命名策略 -->
+		<property name="namingStrategy">
+			<bean class="org.hibernate.cfg.ImprovedNamingStrategy" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<!-- <prop key="hibernate.hbm2ddl.auto">update</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.format_sql">true</prop>
+			</props>
+		</property>
+		<!--自动扫描包下所有@Entity类 -->
+		<property name="packagesToScan" value="com.morefun.XSanGo.db"></property>
+	</bean>
+
+	<bean id="CrossRankDAO" class="com.morefun.XSanGo.db.CrossRankDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="ScheduleDAO" class="com.morefun.XSanGo.db.ScheduleDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="CrossLogDAO" class="com.morefun.XSanGo.db.CrossLogDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="CrossStageDAO" class="com.morefun.XSanGo.db.CrossStageDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<bean id="ScoreLogDAO" class="com.morefun.XSanGo.db.ScoreLogDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	
+	<!-- 战报生成接口地址 -->
+	<bean id="movieHttpUrl" class="java.lang.String">
+		<constructor-arg value="http://192.168.4.213:18080/generate_report"></constructor-arg>
+	</bean>
+	
+	<!-- 获取合服列表接口地址 -->
+	<bean id="mergerServerHttpUrl" class="java.lang.String">
+		<constructor-arg value="http://192.168.4.125:8888/serverCombineMap"></constructor-arg>
+	</bean>
+</beans>
